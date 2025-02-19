@@ -1,43 +1,20 @@
-using Microsoft.AspNetCore.RateLimiting;
+using API_GateWay.core.extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateLogger();
-
-builder.Host.UseSerilog();
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddRateLimiter(rateLimiterOptions =>
-{
-    rateLimiterOptions.AddFixedWindowLimiter("fixed", options =>
-    {
-        options.Window = TimeSpan.FromSeconds(10);
-        options.PermitLimit = 5;
-    });
-});
-
+builder.Services.AddFixedWindowRateLimiter();
+builder.Services.AddResponseCaching();
+builder.AddLogging();
 builder.Services.AddHealthChecks()
     .AddCheck("API Gateway Health", () => HealthCheckResult.Healthy());
-
-builder.Services.AddResponseCaching();
 
 builder.Services
     .AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseResponseCaching();
 app.UseHttpsRedirection();
