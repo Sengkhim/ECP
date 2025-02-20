@@ -7,16 +7,18 @@ builder.Services.AddTelemetryServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFixedWindowRateLimiter();
 builder.Services.AddResponseCaching();
-builder.AddLogging();
 builder.Services.AddHealthChecks()
     .AddCheck("API Gateway Health", () => HealthCheckResult.Healthy());
-
 builder.Services
     .AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
+builder.AddLogging();
+builder.Services.AddConsulClient();
+
 var app = builder.Build();
 
+app.UseServiceRegistries();
 app.UseResponseCaching();
 app.UseHttpsRedirection();
 app.UseAuthentication();

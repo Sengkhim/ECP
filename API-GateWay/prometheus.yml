@@ -1,0 +1,7 @@
+global:
+    scrape_interval: 5s  # How often to scrape metrics
+
+scrape_configs:
+    - job_name: 'dotnet-metrics'
+      static_configs:
+          - targets: ['localhost:44317']  # Ensure this matches your API metrics endpoint
