@@ -1,10 +1,9 @@
 using API_GateWay.core.extensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddTelemetryServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFixedWindowRateLimiter();
 builder.Services.AddResponseCaching();
@@ -25,4 +24,5 @@ app.UseAuthorization();
 app.UseRateLimiter();
 app.MapReverseProxy();
 app.MapHealthChecks("/health");
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 app.Run();
