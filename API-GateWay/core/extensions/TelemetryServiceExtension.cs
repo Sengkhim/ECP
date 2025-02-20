@@ -8,7 +8,7 @@ public static class TelemetryService
 {
     public static void AddTelemetryServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var serviceName = configuration["OpenTelemetry:ServiceName"] ?? "API-GATEWAY";
+        var serviceName = configuration["OpenTelemetry:ServiceName"] ?? "API-GATEWAY-SERVICE";
         var jaegerHost = configuration["OpenTelemetry:JaegerHost"] ?? "localhost";
         var jaegerPort = int.Parse(configuration["OpenTelemetry:JaegerPort"] ?? "44317");
 

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.RateLimiting;
+﻿using API_GateWay.core.Configuration.Oauth2;
+using API_GateWay.core.implement;
+using API_GateWay.core.Services;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 namespace API_GateWay.core.extensions;
 
@@ -10,7 +14,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="builder">The WebApplicationBuilder instance.</param>
     /// <returns>The modified WebApplicationBuilder instance to allow method chaining.</returns>
-    public static void AddLogging(this  WebApplicationBuilder builder)
+    public static void AddLogging(this WebApplicationBuilder builder)
     {
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
@@ -40,5 +44,27 @@ public static class ServiceCollectionExtensions
                 limiterOptions.PermitLimit = permitLimit;
             });
         });
+    }
+
+
+    public static void AddServiceCollections(this IServiceCollection service, IConfiguration configuration)
+    {
+        service.AddHealthChecks()
+            .AddCheck("API Gateway Health", () => HealthCheckResult.Healthy());
+
+        service
+            .AddReverseProxy()
+            .LoadFromConfig(configuration.GetSection("ReverseProxy"));
+        
+        service.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = "localhost:6379";
+            options.InstanceName = "YardCache";
+        });
+
+        service.AddSingleton<IRedisCacheService, RedisCacheService>();
+        
+        service.Configure<GitHubConfiguration>(configuration.GetSection("GitHub"));
+        service.AddGitHubOAuth2(configuration);
     }
 }

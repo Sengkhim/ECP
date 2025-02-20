@@ -9,6 +9,10 @@
 
     <ItemGroup>
         <PackageReference Include="Consul" Version="1.7.14.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.3.0" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
         <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.11.1" />
         <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.5.1" />
         <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.11.0-beta.1" />
@@ -23,7 +27,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="core\application\" />
+      <Folder Include="core\Filters\" />
+      <Folder Include="core\Logs\" />
+      <Folder Include="core\Middleware\" />
+      <Folder Include="core\Policies\" />
     </ItemGroup>
 
 </Project>

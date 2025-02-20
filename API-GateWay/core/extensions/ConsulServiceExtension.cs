@@ -21,7 +21,7 @@ public static class ConsulServiceExtension
             var registration = new AgentServiceRegistration
             {
                 ID = $"service-{Dns.GetHostName()}",
-                Name = "API-Gateway-Service",
+                Name = "API-GATEWAY-SERVICE",
                 Address = "localhost",
                 Port = 5000, // Change if needed
                 Check = new AgentServiceCheck
