@@ -10,7 +10,7 @@ public static class TelemetryService
     {
         var serviceName = configuration["OpenTelemetry:ServiceName"] ?? "API-GATEWAY-SERVICE";
         var jaegerHost = configuration["OpenTelemetry:JaegerHost"] ?? "localhost";
-        var jaegerPort = int.Parse(configuration["OpenTelemetry:JaegerPort"] ?? "44317");
+        var jaegerPort = int.Parse(configuration["OpenTelemetry:JaegerPort"] ?? "7277");
 
         services.AddOpenTelemetry()
             .ConfigureResource(resource => resource

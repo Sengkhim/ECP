@@ -1,14 +1,17 @@
 using System.Net;
+using API_GateWay.core.Configuration.common;
 using Consul;
 
 namespace API_GateWay.core.extensions;
 
 public static class ConsulServiceExtension
 {
-    public static void AddConsulClient(this IServiceCollection service)
+    public static void AddConsulClient(this IServiceCollection service, IConfiguration configuration)
     {
+        var consulConfig = configuration.GetSection("ConsulClient").Get<ConsulConfiguration>();
         service.AddSingleton<IConsulClient, ConsulClient>(p => 
-            new ConsulClient(cfg => cfg.Address = new Uri("http://localhost:8500"))); 
+            new ConsulClient(cfg => 
+                cfg.Address = new Uri(consulConfig?.Address ?? "http://localhost:8500"))); 
     }
 
     public static void UseServiceRegistries(this WebApplication app)

@@ -1,7 +1,10 @@
+# Global configuration
 global:
-    scrape_interval: 5s  # How often to scrape metrics
+    scrape_interval: 15s  # How often to scrape targets (15 seconds)
+    evaluation_interval: 15s  # How often to evaluate rules (15 seconds)
 
+# Scrape configuration for your .NET application
 scrape_configs:
-    - job_name: 'dotnet-metrics'
+    - job_name: 'API-GATE-WAY'
       static_configs:
-          - targets: ['localhost:44317']  # Ensure this matches your API metrics endpoint
+          - targets: ['host.docker.internal:7277']  # Replace with your .NET app's endpoint
