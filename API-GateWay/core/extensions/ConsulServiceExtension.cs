@@ -26,10 +26,10 @@ public static class ConsulServiceExtension
                 ID = $"service-{Dns.GetHostName()}",
                 Name = "API-GATEWAY-SERVICE",
                 Address = "localhost",
-                Port = 5000, // Change if needed
+                Port = 7277, // Change if needed
                 Check = new AgentServiceCheck
                 {
-                    HTTP = "https://localhost:44317/health",
+                    HTTP = "https://localhost:7277/health",
                     Interval = TimeSpan.FromSeconds(10),
                     Timeout = TimeSpan.FromSeconds(5)
                 }
