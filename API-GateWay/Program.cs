@@ -1,28 +1,17 @@
 using API_GateWay.core.extensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+using API_GateWay.Infrastructure.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddFixedWindowRateLimiter();
-builder.Services.AddResponseCaching();
 builder.AddLogging();
-builder.Services.AddHealthChecks()
-    .AddCheck("API Gateway Health", () => HealthCheckResult.Healthy());
-
-builder.Services
-    .AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+builder.Services.AddEpcDatabase(builder.Configuration);
+builder.Services.AddServiceCollections(builder.Configuration);
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
-app.UseResponseCaching();
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseRateLimiter();
-app.MapReverseProxy();
-app.MapHealthChecks("/health");
+app.AddApplicationMiddlewares();
 app.Run();
+
