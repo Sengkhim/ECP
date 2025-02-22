@@ -80,7 +80,7 @@ export class ApplicationService {
     
     async run(app: INestApplication, log?: () => void) {
         const port: number = this.getAppPort();
-        const listener = log ?? (() => console.log(`SERVER is running on http://localhost:${port}/api`));
+        const listener = log ?? (() => console.info(`Listening on : http://localhost:${port}/api`));
         await app.listen(port, listener);
     }
 }
