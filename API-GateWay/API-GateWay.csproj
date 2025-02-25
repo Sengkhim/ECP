@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>API_GateWay</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -45,7 +46,13 @@
       <Folder Include="core\Filters\" />
       <Folder Include="core\Logs\" />
       <Folder Include="core\Policies\" />
+      <Folder Include="Infrastructure\Extension\" />
       <Folder Include="Infrastructure\OrmMapping\" />
+      <Folder Include="Infrastructure\Services\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Library\Library.csproj" />
     </ItemGroup>
 
 </Project>

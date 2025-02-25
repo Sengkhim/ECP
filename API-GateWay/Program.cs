@@ -1,10 +1,10 @@
 using API_GateWay.core.extensions;
-using API_GateWay.Infrastructure.Extension;
+using Library.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddLogging();
-builder.Services.AddEpcDatabase(builder.Configuration);
+builder.Services.AddDatabaseLayer(builder.Configuration);
 builder.Services.AddServiceCollections(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
