@@ -1,0 +1,10 @@
+using Microsoft.AspNetCore.Identity;
+
+namespace Library.Persistent.Entities;
+
+public class UserEntity : IdentityUser
+{
+    public string FullName { get; init; } = string.Empty;
+    public DateTime DateOfBirth { get; init; }
+    public string Address { get; init; } = string.Empty;
+}

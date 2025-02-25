@@ -1,5 +1,5 @@
 ﻿using API_GateWay.core.Middleware;
-using API_GateWay.Infrastructure.Extension;
+using Library.Extensions;
 
 namespace API_GateWay.core.extensions;
 
@@ -12,8 +12,8 @@ public static class ApplicationExtension
 
     public static void AddApplicationMiddlewares(this WebApplication app)
     {
-        app.ApplyMigrate();
-        app.UseServiceRegistries();
+        app.ApplyMigrate(app.Environment.IsDevelopment());
+        // app.UseServiceRegistries();
         app.UseResponseCaching();
         app.UseHttpsRedirection();
         app.UseAuthentication();
