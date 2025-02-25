@@ -1,32 +1,32 @@
 using System.Collections;
 using Library.Core.Repository;
-using Library.Persistent;
-using Library.Service;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using static System.GC;
 
 namespace Library.Core.UnitOfWork;
 
-public class UnitOfWork(EcpDatabase context) : IUnitOfWork
+
+public class UnitOfWork(DbContext context) : IUnitOfWork
 {       
     private Hashtable? _repositories;
     private bool _disposed;
 
-    public IEcpDatabase Context { get; } = context;
+    public DbContext Context => context;
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken) 
-        => await Context.SaveChangesAsync(cancellationToken);
+        => await context.SaveChangesAsync(cancellationToken);
 
     public void Dispose()
     {
         Dispose(true);
-        GC.SuppressFinalize(this);
+        SuppressFinalize(this);
     }
+    
     private void Dispose(bool disposing)
     {
         if (!_disposed)
-            if (disposing)
-                //dispose managed resources
-                context.Dispose();
-        //dispose unmanaged resources
+            if (disposing) context.Dispose();
         _disposed = true;
     }
 
@@ -49,7 +49,7 @@ public class UnitOfWork(EcpDatabase context) : IUnitOfWork
 
     public Task Rollback()
     {
-        context.ChangeTracker
+        Context.ChangeTracker
             .Entries()
             .ToList()
             .ForEach(entry => entry.Reload());

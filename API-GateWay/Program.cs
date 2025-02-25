@@ -1,10 +1,12 @@
 using API_GateWay.core.extensions;
-using Library.Extensions;
+using Microsoft.EntityFrameworkCore;
+
+// using Library.Extensions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddLogging();
-builder.Services.AddDatabaseLayer(builder.Configuration);
 builder.Services.AddServiceCollections(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -14,4 +16,3 @@ var app = builder.Build();
 
 app.AddApplicationMiddlewares();
 app.Run();
-

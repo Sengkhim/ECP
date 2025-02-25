@@ -1,3 +1,4 @@
+using Library.Core.Configuration;
 using Library.Core.UnitOfWork;
 using Library.Persistent;
 using Library.Persistent.Entities;
@@ -11,9 +12,14 @@ namespace Library.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static void AddCoreServices(this IServiceCollection services)
+    public static void AddGlobalCoreServices(this IServiceCollection services)
     {
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IEcpDatabase, EcpDatabase>();
+    }
+
+    public static void LoadCoreServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IConfigurationModeling, ConfigurationModeling>();
     }
     
     public static void AddDatabaseLayer(this IServiceCollection services, IConfiguration config, string key = "ECP_DATABASE")
@@ -26,8 +32,5 @@ public static class ServiceCollectionExtension
         services.AddIdentity<UserEntity, RoleEntity>()
             .AddEntityFrameworkStores<EcpDatabase>()
             .AddDefaultTokenProviders();
-        
-        services.AddScoped<IEcpDatabase, EcpDatabase>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }
