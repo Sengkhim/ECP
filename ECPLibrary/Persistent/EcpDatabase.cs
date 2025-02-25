@@ -1,9 +1,22 @@
+using ECPLibrary.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECPLibrary.Persistent;
 
-public interface IEcpDatabase { }
+public class EcpDatabase(DbContextOptions<EcpDatabase> options, IConfigurationModeling modeling)
+    : IdentityDbContext<IdentityUser<string>, IdentityRole<string>, string>(options), IEcpDatabase
+{
+    
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        modeling.Configuration(builder);
+    }
 
-public class EcpDatabase(DbContextOptions<EcpDatabase> options) : DbContext(options), IEcpDatabase;
-
-public class EcpIdentityDatabase(DbContextOptions<EcpIdentityDatabase> options) : DbContext(options), IEcpDatabase;
+    Task<int> IEcpDatabase.SaveChanges()
+    {
+        return Task.FromResult(SaveChanges());
+    }
+}

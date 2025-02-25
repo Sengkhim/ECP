@@ -20,9 +20,4 @@
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.6.0" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-      <Folder Include="Services\" />
-    </ItemGroup>
 </Project>
