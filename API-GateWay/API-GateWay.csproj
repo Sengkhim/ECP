@@ -47,12 +47,13 @@
       <Folder Include="core\Logs\" />
       <Folder Include="core\Policies\" />
       <Folder Include="Infrastructure\Extension\" />
-      <Folder Include="Infrastructure\OrmMapping\" />
       <Folder Include="Infrastructure\Services\" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Library\Library.csproj" />
+      <Reference Include="ECPLibrary">
+        <HintPath>..\..\CoreLib\ECPLibrary\bin\Release\net8.0\ECPLibrary.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
