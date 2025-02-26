@@ -1,27 +1,22 @@
-using Library.Core.UnitOfWork;
-using Library.Persistent;
-using Library.Persistent.Entities;
-using Library.Service;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using UserService.Database;
+using Library.Extensions;
+using UserService.Extensions;
+using UserService.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Services.AddDatabaseLayer<UserContext>(builder.Configuration);
-var connectionString = builder.Configuration.GetConnectionString("ECP_DATABASE");
-
-builder.Services.AddDbContext<UserContext>(options =>
-    options.UseNpgsql(connectionString));
-
-builder.Services.AddIdentity<UserEntity, RoleEntity>()
-    .AddEntityFrameworkStores<UserContext>()
-    .AddDefaultTokenProviders();
-
-// builder.Services.AddScoped<IIdentityDatabaseService, EcpIdentityDb<DbContext>>();
-// builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddCoreServices(builder.Configuration);
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+var development = app.Environment.IsDevelopment();
+if (development)
+{
+    development.ApplyMigrate(app);
+    app.UseSwaggerOptions();
+}
+
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
